@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
 import { Mail, Lock, User, GraduationCap, Heart, ArrowRight, ChevronLeft } from 'lucide-react';
@@ -52,6 +52,24 @@ export default function Login() {
       {/* Background Glows */}
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-pink-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+              <Heart className="text-white w-6 h-6" fill="currentColor" />
+            </div>
+            <span className="text-lg font-black text-white">TruMate</span>
+          </Link>
+
+          <Link
+            to="/"
+            className="text-zinc-500 hover:text-white text-sm font-semibold transition-colors"
+          >
+            Home
+          </Link>
+        </div>
+      </div>
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
 import { GraduationCap, BookOpen, Users, ArrowRight, Heart, MessageCircle, Sparkles } from 'lucide-react';
+import BottomNav from '../components/BottomNav';
 
 export default function Home() {
   const user = useAuthStore((state) => state.user);
@@ -29,7 +30,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white selection:bg-purple-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-[#0A0A0A] text-white selection:bg-purple-500/30 overflow-x-hidden pb-32">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse" />
@@ -100,10 +101,10 @@ export default function Home() {
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
             <Link
-              to="/login"
+              to={user ? "/discover" : "/login"}
               className="group relative inline-flex items-center gap-2 bg-white text-black font-bold text-lg px-8 py-4 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
             >
-              Start Swiping
+              {user ? 'Go to Discover' : 'Start Swiping'}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <button className="px-8 py-4 rounded-2xl border border-zinc-800 font-bold text-lg hover:bg-zinc-900 transition-all">
@@ -195,6 +196,8 @@ export default function Home() {
           <p className="text-zinc-600 text-sm">© 2024 TruMate. Built for the modern student experience.</p>
         </div>
       </footer>
+
+      {user ? <BottomNav /> : null}
     </div>
   );
 }
