@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { ArrowLeft, Send } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { apiUrl } from '../lib/api';
 
 interface Message {
   _id: string;
@@ -26,10 +27,10 @@ export default function Chat() {
     const fetchMatchAndHistory = async () => {
       try {
         const [matchRes, historyRes] = await Promise.all([
-          fetch(`http://localhost:3001/api/matches`, {
+          fetch(apiUrl('/api/matches'), {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch(`http://localhost:3001/api/messages/${matchId}`, {
+          fetch(apiUrl(`/api/messages/${matchId}`), {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -48,7 +49,7 @@ export default function Chat() {
     fetchMatchAndHistory();
 
     // Setup Socket
-    socketRef.current = io('http://localhost:3001');
+    socketRef.current = io(apiUrl('/'));
     socketRef.current.emit('join_match', matchId);
 
     socketRef.current.on('receive_message', (message: Message) => {
@@ -69,7 +70,7 @@ export default function Chat() {
     if (!newMessage.trim()) return;
 
     try {
-      const response = await fetch('http://localhost:3001/api/messages/send', {
+      const response = await fetch(apiUrl('/api/messages/send'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

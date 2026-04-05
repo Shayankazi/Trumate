@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 import { Heart, X, MapPin, Compass, Briefcase, GraduationCap, RotateCcw } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import BottomNav from '../components/BottomNav';
+import { apiUrl } from '../lib/api';
 
 interface UserCard {
   _id: string;
@@ -179,7 +180,7 @@ export default function Discover() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/users/discover', {
+      const response = await fetch(apiUrl('/api/users/discover'), {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -197,7 +198,7 @@ export default function Discover() {
     setCurrentIndex((prev) => prev + 1);
 
     try {
-      await fetch('http://localhost:3001/api/matches/swipe', {
+      await fetch(apiUrl('/api/matches/swipe'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +214,7 @@ export default function Discover() {
   const handleRestack = async () => {
     setIsRestacking(true);
     try {
-      const response = await fetch('http://localhost:3001/api/matches/restack', {
+      const response = await fetch(apiUrl('/api/matches/restack'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

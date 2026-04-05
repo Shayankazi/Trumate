@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
+import { apiUrl } from '../lib/api';
 import { 
   MapPin, 
   Book, 
@@ -57,7 +58,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/users/me', {
+        const response = await fetch(apiUrl('/api/users/me'), {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -130,7 +131,7 @@ export default function Profile() {
         ? formData.images
         : [`https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=${encodeURIComponent('modern professional student headshot, soft lighting, campus background')}&image_size=square_hd`];
 
-      const response = await fetch('http://localhost:3001/api/users/profile', {
+      const response = await fetch(apiUrl('/api/users/profile'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +153,7 @@ export default function Profile() {
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/api/auth/reset-password', {
+      const response = await fetch(apiUrl('/api/auth/reset-password'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

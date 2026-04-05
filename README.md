@@ -50,6 +50,8 @@ PORT=3001
 VITE_API_URL=http://localhost:3001
 ```
 
+Note: the frontend is written to call the API via `/api/...`. In local development, Vite proxies `/api` to the backend.
+
 ### 4. Run the development server
 ```bash
 npm run dev
@@ -67,13 +69,22 @@ This project is containerized for easy deployment on AWS EC2.
 docker-compose up --build -d
 ```
 
+After this:
+- Frontend runs on port `80`
+- Backend is reachable internally by the frontend through Nginx at `/api` and `/socket.io`
+
 ### 2. Manual Deployment on EC2
 1. Launch an EC2 instance (Ubuntu recommended).
 2. Install Docker and Docker Compose.
 3. Clone this repo.
 4. Set up your `.env` file.
 5. Run `docker-compose up -d`.
-6. Configure your Security Group to allow traffic on port 80/443 (using Nginx as a reverse proxy).
+6. Configure your Security Group to allow inbound traffic on `80` (and `443` if you add TLS).
+
+If the site loads but can't connect to the backend, it's usually one of these:
+- Frontend still points to `http://localhost:3001` (wrong on EC2). This repo now avoids that by using `/api`.
+- Port `80` isn’t open in the Security Group.
+- Backend isn’t healthy (check `docker compose logs backend`).
 
 ---
 

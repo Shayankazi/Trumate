@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
 import BottomNav from '../components/BottomNav';
 import { MessageCircle, Heart, UserCheck, UserX, Clock, Sparkles, Send, MapPin } from 'lucide-react';
+import { apiUrl } from '../lib/api';
 
 interface Match {
   _id: string;
@@ -56,13 +57,13 @@ export default function Matches() {
     setIsLoading(true);
     try {
       const [matchesRes, requestsRes, sentRes] = await Promise.all([
-        fetch('http://localhost:3001/api/matches', {
+        fetch(apiUrl('/api/matches'), {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:3001/api/matches/requests', {
+        fetch(apiUrl('/api/matches/requests'), {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:3001/api/matches/sent', {
+        fetch(apiUrl('/api/matches/sent'), {
           headers: { Authorization: `Bearer ${token}` },
         })
       ]);
@@ -87,7 +88,7 @@ export default function Matches() {
 
   const handleAction = async (matchId: string, action: 'accept' | 'reject') => {
     try {
-      const response = await fetch(`http://localhost:3001/api/matches/${matchId}/${action}`, {
+      const response = await fetch(apiUrl(`/api/matches/${matchId}/${action}`), {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });

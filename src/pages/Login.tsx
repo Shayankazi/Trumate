@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
 import { Mail, Lock, User, GraduationCap, Heart, ArrowRight, ChevronLeft } from 'lucide-react';
+import { apiUrl } from '../lib/api';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -21,7 +22,7 @@ export default function Login() {
     const body = isLogin ? { email, password } : { email, password, role, name };
 
     try {
-      const response = await fetch(`http://localhost:3001${endpoint}`, {
+      const response = await fetch(apiUrl(endpoint), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
