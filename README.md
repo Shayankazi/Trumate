@@ -47,10 +47,11 @@ Create a `.env` file in the root directory and add the following:
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 PORT=3001
-VITE_API_URL=http://localhost:3001
 ```
 
-Note: the frontend is written to call the API via `/api/...`. In local development, Vite proxies `/api` to the backend.
+Note: the frontend calls the API via `/api/...`. In local development, Vite proxies `/api` to the backend.
+
+Optional (only if your API runs on a different domain): set `VITE_API_URL=https://your-api-domain.com`.
 
 ### 4. Run the development server
 ```bash
