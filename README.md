@@ -2,7 +2,6 @@
 
 TruMate is a premium, mobile-first roommate matching platform designed specifically for college students in India. Finding a compatible roommate shouldn't be a gamble—TruMate uses a smart matching algorithm to connect students based on their city, area proximity, lifestyle habits, and shared interests.
 
-![TruMate Demo](https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern+mobile+app+interface+on+iphone+showing+a+dating+app+style+card+for+roommate+matching+dark+mode+purple+accents&image_size=landscape_16_9)
 
 ## 🚀 Features
 
