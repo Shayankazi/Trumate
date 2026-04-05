@@ -37,11 +37,26 @@ app.use('/api/users', userRoutes)
 app.use('/api/matches', matchRoutes)
 app.use('/api/messages', messageRoutes)
 
+app.use('/auth', authRoutes)
+app.use('/users', userRoutes)
+app.use('/matches', matchRoutes)
+app.use('/messages', messageRoutes)
+
 /**
  * health
  */
 app.use(
   '/api/health',
+  (req: Request, res: Response, next: NextFunction): void => {
+    res.status(200).json({
+      success: true,
+      message: 'ok',
+    })
+  },
+)
+
+app.use(
+  '/health',
   (req: Request, res: Response, next: NextFunction): void => {
     res.status(200).json({
       success: true,
