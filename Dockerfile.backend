@@ -1,0 +1,15 @@
+# Backend Dockerfile
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Build the frontend to get the dist folder if needed, 
+# but here we'll just run the server
+EXPOSE 3001
+
+CMD ["npx", "tsx", "api/server.ts"]
