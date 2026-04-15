@@ -187,7 +187,7 @@ export default function Discover() {
 
   const handleSwipe = async (direction: 'like' | 'pass') => {
     if (currentIndex >= users.length) return;
-    const targetUserId = users[currentIndex]._id;
+    const currentUser = users[currentIndex];
     setCurrentIndex((prev) => prev + 1);
 
     try {
@@ -197,7 +197,11 @@ export default function Discover() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ targetUserId, action: direction }),
+        body: JSON.stringify({
+          targetUserId: currentUser._id,
+          action: direction,
+          compatibilityScore: currentUser.compatibilityScore,
+        }),
       });
     } catch (error) {
       console.error('Failed to record swipe:', error);

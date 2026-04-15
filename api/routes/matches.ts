@@ -12,7 +12,7 @@ const router = Router();
  */
 router.post('/swipe', auth, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { targetUserId, action } = req.body;
+    const { targetUserId, action, compatibilityScore } = req.body;
     const currentUserId = req.user?.id;
 
     if (!currentUserId) {
@@ -53,7 +53,7 @@ router.post('/swipe', auth, async (req: AuthRequest, res: Response): Promise<voi
         requester_id: currentUserId,
         target_id: targetUserId,
         status: 'pending',
-        compatibility_score: 85, // Mock score for now
+        compatibility_score: typeof compatibilityScore === 'number' ? compatibilityScore : 0,
       });
       await match.save();
 
