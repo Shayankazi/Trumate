@@ -67,98 +67,103 @@ const DiscoveryCard = forwardRef<HTMLDivElement, CardProps>(({ user, onSwipe }, 
       transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       className="absolute inset-3 cursor-grab active:cursor-grabbing"
     >
-      <div className="relative h-full w-full rounded-2xl overflow-hidden shadow-2xl bg-[#1A1714]">
-        {/* Image — constrained to top 65% to avoid extreme stretch of small portraits */}
-        <img
-          src={user.images[0]}
-          alt={user.name}
-          className="absolute top-0 left-0 w-full h-[65%] object-cover object-top select-none pointer-events-none"
-        />
+      <div className="h-full w-full rounded-2xl overflow-hidden shadow-2xl flex flex-col bg-[#1A1714]">
 
-        {/* Gradient overlay — covers full card from bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/10 pointer-events-none" />
-
-        {/* Like / Pass indicators */}
-        <motion.div
-          style={{ opacity: likeOpacity }}
-          className="absolute top-10 left-8 rotate-[-20deg] border-4 border-[#D94F1E] text-[#D94F1E] rounded-xl px-4 py-2 z-20"
-        >
-          <span className="text-2xl font-bold tracking-wide">LIKE</span>
-        </motion.div>
-        <motion.div
-          style={{ opacity: passOpacity }}
-          className="absolute top-10 right-8 rotate-[20deg] border-4 border-white text-white rounded-xl px-4 py-2 z-20"
-        >
-          <span className="text-2xl font-bold tracking-wide">NOPE</span>
-        </motion.div>
-
-        {/* Compatibility badge */}
-        <div
-          className={`absolute top-5 right-5 px-3 py-1.5 rounded-full flex items-center gap-1.5 z-10 ${
-            user.compatibilityScore <= 25
-              ? 'bg-white/15 text-white'
-              : 'bg-[#D94F1E]/90 text-white'
-          }`}
-        >
-          <div
-            className={`w-2 h-2 rounded-full ${
-              user.compatibilityScore <= 25 ? 'bg-white/60' : 'bg-white'
-            }`}
+        {/* ── Photo section (fixed height, no full-bleed stretch) ── */}
+        <div className="relative flex-shrink-0 h-[55%]">
+          <img
+            src={user.images[0]}
+            alt={user.name}
+            className="w-full h-full object-cover object-top select-none pointer-events-none"
           />
-          <span className="text-xs font-semibold">{user.compatibilityScore}% match</span>
+          {/* Fade into dark info panel */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#1A1714] to-transparent pointer-events-none" />
+
+          {/* Like / Pass indicators */}
+          <motion.div
+            style={{ opacity: likeOpacity }}
+            className="absolute top-8 left-6 rotate-[-20deg] border-4 border-[#D94F1E] text-[#D94F1E] rounded-xl px-4 py-2 z-20"
+          >
+            <span className="text-2xl font-bold tracking-wide">LIKE</span>
+          </motion.div>
+          <motion.div
+            style={{ opacity: passOpacity }}
+            className="absolute top-8 right-6 rotate-[20deg] border-4 border-white text-white rounded-xl px-4 py-2 z-20"
+          >
+            <span className="text-2xl font-bold tracking-wide">NOPE</span>
+          </motion.div>
+
+          {/* Compatibility badge */}
+          <div
+            className={`absolute top-4 right-4 px-3 py-1.5 rounded-full flex items-center gap-1.5 z-10 ${
+              user.compatibilityScore <= 25
+                ? 'bg-white/15 text-white'
+                : 'bg-[#D94F1E]/90 text-white'
+            }`}
+          >
+            <div
+              className={`w-2 h-2 rounded-full ${
+                user.compatibilityScore <= 25 ? 'bg-white/60' : 'bg-white'
+              }`}
+            />
+            <span className="text-xs font-semibold">{user.compatibilityScore}% match</span>
+          </div>
         </div>
 
-        {/* User info */}
-        <div className="absolute bottom-28 left-5 right-5 z-10 pointer-events-none space-y-3">
-          <div>
-            <h3 className="text-3xl font-bold text-white leading-tight">
-              {user.name}, {user.age}
-            </h3>
-            {user.gender && (
-              <span className="text-white/60 text-sm">{user.gender}</span>
-            )}
-          </div>
-
-          <div className="flex flex-wrap gap-3 text-white/80 text-xs">
-            <div className="flex items-center gap-1.5">
-              <MapPin size={13} className="text-[#D94F1E]" />
-              {user.location.city}
+        {/* ── Info panel (dark, in normal flow — no absolute positioning) ── */}
+        <div className="flex-1 min-h-0 px-5 pt-3 pb-4 flex flex-col justify-between">
+          <div className="space-y-2.5">
+            <div>
+              <h3 className="text-2xl font-bold text-white leading-tight">
+                {user.name}, {user.age}
+              </h3>
+              {user.gender && (
+                <span className="text-white/50 text-sm">{user.gender}</span>
+              )}
             </div>
-            {user.major && (
-              <div className="flex items-center gap-1.5">
-                <Briefcase size={13} className="text-[#D94F1E]" />
-                {user.major}
-              </div>
-            )}
-            {user.college && (
-              <div className="flex items-center gap-1.5">
-                <GraduationCap size={13} className="text-[#D94F1E]" />
-                {user.college} {user.year && `(${user.year})`}
-              </div>
-            )}
-            {user.rent && (
+
+            <div className="flex flex-wrap gap-2.5 text-white/70 text-xs">
               <div className="flex items-center gap-1">
-                <span className="text-[#D94F1E] font-semibold">₹</span>
-                {user.rent}/mo
+                <MapPin size={12} className="text-[#D94F1E]" />
+                {user.location.city}
+              </div>
+              {user.major && (
+                <div className="flex items-center gap-1">
+                  <Briefcase size={12} className="text-[#D94F1E]" />
+                  {user.major}
+                </div>
+              )}
+              {user.college && (
+                <div className="flex items-center gap-1">
+                  <GraduationCap size={12} className="text-[#D94F1E]" />
+                  {user.college} {user.year && `(${user.year})`}
+                </div>
+              )}
+              {user.rent && (
+                <div className="flex items-center gap-1">
+                  <span className="text-[#D94F1E] font-semibold">₹</span>
+                  {user.rent}/mo
+                </div>
+              )}
+            </div>
+
+            {user.interests?.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {user.interests.slice(0, 4).map((interest) => (
+                  <span
+                    key={interest}
+                    className="px-2.5 py-1 bg-white/8 border border-white/10 rounded-full text-[11px] text-white/80"
+                  >
+                    {interest}
+                  </span>
+                ))}
               </div>
             )}
+
+            <p className="text-white/55 text-xs leading-relaxed line-clamp-2">{user.bio}</p>
           </div>
-
-          {user.interests?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {user.interests.slice(0, 5).map((interest) => (
-                <span
-                  key={interest}
-                  className="px-2.5 py-1 bg-white/10 backdrop-blur-sm rounded-full text-[11px] text-white/90 border border-white/10"
-                >
-                  {interest}
-                </span>
-              ))}
-            </div>
-          )}
-
-          <p className="text-white/70 text-sm leading-relaxed line-clamp-2">{user.bio}</p>
         </div>
+
       </div>
     </motion.div>
   );
