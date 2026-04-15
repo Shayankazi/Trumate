@@ -161,7 +161,11 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
         major: rnd(majors), college: rnd(colleges), year: rnd(years),
         bio: bio(),
         location: { city: loc.city, coordinates: loc.coordinates },
-        images: [`https://i.pravatar.cc/500?img=${s.img}`],
+        images: [
+          s.gender === "Man"
+            ? `https://randomuser.me/api/portraits/men/${s.img}.jpg`
+            : `https://randomuser.me/api/portraits/women/${s.img}.jpg`
+        ],
         interests: rndN(interestPool, 5),
         preferences: {
           smoking: Math.random()<0.15, drinking: Math.random()<0.25,
