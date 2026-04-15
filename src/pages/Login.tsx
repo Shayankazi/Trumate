@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
-import { Mail, Lock, User, GraduationCap, Heart, ArrowRight, ChevronLeft } from 'lucide-react';
+import { Heart, ArrowRight, ChevronLeft } from 'lucide-react';
 import { apiUrl } from '../lib/api';
 
 export default function Login() {
@@ -37,177 +37,195 @@ export default function Login() {
           navigate('/profile-setup');
         }
       } else {
-        alert(data.message || 'Error occurred');
+        alert(data.message || 'Something went wrong');
       }
     } catch (error) {
       console.error(error);
-      alert('Failed to connect to server');
+      alert('Could not connect to server');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-pink-600/10 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-[#F8F6F2] flex flex-col md:flex-row">
+      {/* Left panel */}
+      <div className="hidden md:flex md:w-[42%] bg-[#1A1714] flex-col justify-between p-12">
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-[#D94F1E] rounded-lg flex items-center justify-center">
+            <Heart className="w-4 h-4 text-white" fill="currentColor" />
+          </div>
+          <span className="text-lg font-bold text-white">TruMate</span>
+        </Link>
 
-      <div className="absolute top-0 left-0 right-0 z-20">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-              <Heart className="text-white w-6 h-6" fill="currentColor" />
-            </div>
-            <span className="text-lg font-black text-white">TruMate</span>
-          </Link>
+        <div>
+          <blockquote className="text-2xl font-medium text-white leading-relaxed mb-6">
+            "Found my roommate on TruMate in less than a week. We both love late-night coding sessions and hate loud music. Perfect match."
+          </blockquote>
+          <div>
+            <div className="font-semibold text-white text-sm">Priya M.</div>
+            <div className="text-[#706B64] text-sm">Computer Science, MIT-WPU</div>
+          </div>
+        </div>
 
-          <Link
-            to="/"
-            className="text-zinc-500 hover:text-white text-sm font-semibold transition-colors"
-          >
-            Home
-          </Link>
+        <div className="flex items-center gap-2 text-[#A09890] text-xs">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#D94F1E]" />
+          Verified student community
         </div>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md relative z-10"
-      >
-        <div className="bg-zinc-900/40 backdrop-blur-2xl p-8 md:p-10 rounded-[2.5rem] border border-zinc-800/50 shadow-2xl">
-          <div className="text-center mb-10">
-            <motion.div 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", damping: 12 }}
-              className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-purple-500/20"
-            >
-              <Heart className="text-white w-8 h-8" fill="currentColor" />
-            </motion.div>
-            <h1 className="text-3xl font-black text-white mb-2 tracking-tight">
-              {isLogin ? 'Welcome Back' : 'Join TruMate'}
-            </h1>
-            <p className="text-zinc-500 text-sm">
-              {isLogin ? 'Continue your campus journey' : 'Start finding your perfect campus match'}
-            </p>
-          </div>
+      {/* Right panel */}
+      <div className="flex-1 flex flex-col">
+        {/* Mobile nav */}
+        <div className="md:hidden flex items-center justify-between px-6 py-5 border-b border-[#E8E5DF]">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-[#D94F1E] rounded-lg flex items-center justify-center">
+              <Heart className="w-3.5 h-3.5 text-white" fill="currentColor" />
+            </div>
+            <span className="font-bold text-[#1A1714]">TruMate</span>
+          </Link>
+          <Link to="/" className="text-sm text-[#706B64] font-medium">Back</Link>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <AnimatePresence mode="wait">
-              {!isLogin && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-5"
-                >
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-5 h-5" />
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
-                      placeholder="Full Name"
-                    />
-                  </div>
-
-                  <div className="flex gap-3 p-1 bg-zinc-950/50 rounded-2xl border border-zinc-800">
-                    <button
-                      type="button"
-                      onClick={() => setRole('seeker')}
-                      className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all text-sm font-bold ${
-                        role === 'seeker'
-                          ? 'bg-zinc-800 text-white shadow-lg'
-                          : 'text-zinc-500 hover:text-zinc-300'
-                      }`}
-                    >
-                      I need a room
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setRole('owner')}
-                      className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all text-sm font-bold ${
-                        role === 'owner'
-                          ? 'bg-zinc-800 text-white shadow-lg'
-                          : 'text-zinc-500 hover:text-zinc-300'
-                      }`}
-                    >
-                      I have a room
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-5 h-5" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
-                placeholder="Email address"
-              />
+        <div className="flex-1 flex items-center justify-center px-6 py-12">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="w-full max-w-sm"
+          >
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-[#1A1714] mb-1.5">
+                {isLogin ? 'Welcome back' : 'Create your account'}
+              </h1>
+              <p className="text-[#706B64] text-sm">
+                {isLogin
+                  ? 'Sign in to continue finding your roommate.'
+                  : 'Join thousands of students already on TruMate.'}
+              </p>
             </div>
 
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-5 h-5" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
-                placeholder="Password"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <AnimatePresence mode="wait">
+                {!isLogin && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-4 overflow-hidden"
+                  >
+                    <div>
+                      <label className="block text-sm font-medium text-[#1A1714] mb-1.5">
+                        Full name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full bg-white border border-[#D8D4CC] rounded-xl px-4 py-3 text-[#1A1714] placeholder:text-[#A09890] focus:outline-none focus:ring-2 focus:ring-[#D94F1E]/30 focus:border-[#D94F1E] transition-all text-sm"
+                        placeholder="Alex Johnson"
+                      />
+                    </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full group relative bg-white text-black font-black py-4 rounded-2xl overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
+                    <div>
+                      <label className="block text-sm font-medium text-[#1A1714] mb-1.5">
+                        I'm looking to...
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setRole('seeker')}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all text-left ${
+                            role === 'seeker'
+                              ? 'bg-[#FEF0EB] border-[#D94F1E] text-[#D94F1E]'
+                              : 'bg-white border-[#D8D4CC] text-[#706B64] hover:border-[#A09890]'
+                          }`}
+                        >
+                          Find a room
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setRole('owner')}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all text-left ${
+                            role === 'owner'
+                              ? 'bg-[#FEF0EB] border-[#D94F1E] text-[#D94F1E]'
+                              : 'bg-white border-[#D8D4CC] text-[#706B64] hover:border-[#A09890]'
+                          }`}
+                        >
+                          List a room
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div>
+                <label className="block text-sm font-medium text-[#1A1714] mb-1.5">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-white border border-[#D8D4CC] rounded-xl px-4 py-3 text-[#1A1714] placeholder:text-[#A09890] focus:outline-none focus:ring-2 focus:ring-[#D94F1E]/30 focus:border-[#D94F1E] transition-all text-sm"
+                  placeholder="you@college.edu"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#1A1714] mb-1.5">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-white border border-[#D8D4CC] rounded-xl px-4 py-3 text-[#1A1714] placeholder:text-[#A09890] focus:outline-none focus:ring-2 focus:ring-[#D94F1E]/30 focus:border-[#D94F1E] transition-all text-sm"
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex items-center justify-center gap-2 bg-[#D94F1E] text-white font-semibold py-3.5 rounded-xl hover:bg-[#C2441A] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    {isLogin ? 'Sign In' : 'Create Account'}
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    {isLogin ? 'Sign in' : 'Create account'}
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
-              </span>
-            </button>
-          </form>
+              </button>
+            </form>
 
-          <div className="mt-8 text-center">
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-zinc-500 hover:text-white text-sm font-medium transition-colors"
-            >
-              {isLogin ? (
-                <>New here? <span className="text-purple-400">Create an account</span></>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  <ChevronLeft className="w-4 h-4" />
-                  Back to Sign In
-                </span>
-              )}
-            </button>
-          </div>
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-sm text-[#706B64] hover:text-[#1A1714] transition-colors"
+              >
+                {isLogin ? (
+                  <>
+                    Don't have an account?{' '}
+                    <span className="font-semibold text-[#D94F1E]">Sign up free</span>
+                  </>
+                ) : (
+                  <span className="flex items-center justify-center gap-1.5">
+                    <ChevronLeft className="w-4 h-4" />
+                    Back to sign in
+                  </span>
+                )}
+              </button>
+            </div>
+          </motion.div>
         </div>
-
-        {/* Bottom Tagline */}
-        <div className="mt-8 flex items-center justify-center gap-2 text-zinc-600">
-          <GraduationCap className="w-4 h-4" />
-          <span className="text-xs font-semibold uppercase tracking-widest">Verified Student Community</span>
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

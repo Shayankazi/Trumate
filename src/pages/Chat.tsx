@@ -23,7 +23,6 @@ export default function Chat() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Fetch match info and history
     const fetchMatchAndHistory = async () => {
       try {
         const [matchRes, historyRes] = await Promise.all([
@@ -37,7 +36,7 @@ export default function Chat() {
 
         const matches = await matchRes.json();
         const history = await historyRes.json();
-        
+
         const currentMatch = matches.find((m: any) => m._id === matchId);
         setMatchInfo(currentMatch);
         setMessages(history);
@@ -48,7 +47,6 @@ export default function Chat() {
 
     fetchMatchAndHistory();
 
-    // Setup Socket
     socketRef.current = io(apiUrl('/'));
     socketRef.current.emit('join_match', matchId);
 
@@ -74,7 +72,7 @@ export default function Chat() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ matchId, content: newMessage }),
       });
@@ -90,29 +88,37 @@ export default function Chat() {
   if (!matchInfo) return null;
 
   return (
-    <div className="flex flex-col h-screen bg-[#1A1A1A]">
+    <div className="flex flex-col h-screen bg-[#F8F6F2]">
       {/* Header */}
-      <header className="flex items-center gap-4 px-4 py-3 bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-800 sticky top-0 z-10">
-        <button onClick={() => navigate(-1)} className="text-zinc-400">
-          <ArrowLeft size={24} />
+      <header className="flex items-center gap-3 px-4 py-3.5 bg-white border-b border-[#E8E5DF] sticky top-0 z-10">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-[#F0EDE8] text-[#706B64] hover:text-[#1A1714] transition-colors"
+        >
+          <ArrowLeft size={20} />
         </button>
-        <div className="flex items-center gap-3">
-          <img
-            src={matchInfo.user.images[0]}
-            alt={matchInfo.user.name}
-            className="w-10 h-10 rounded-full object-cover"
-          />
-          <div>
-            <h2 className="text-white font-bold leading-tight">{matchInfo.user.name}</h2>
-            <p className="text-zinc-500 text-[10px] uppercase font-bold tracking-wider">
-              {matchInfo.user.role}
-            </p>
-          </div>
+        <img
+          src={matchInfo.user.images[0]}
+          alt={matchInfo.user.name}
+          className="w-9 h-9 rounded-full object-cover"
+        />
+        <div>
+          <h2 className="text-[#1A1714] font-semibold text-sm leading-tight">
+            {matchInfo.user.name}
+          </h2>
+          <p className="text-[#A09890] text-xs capitalize">{matchInfo.user.role}</p>
         </div>
       </header>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-4 py-5 space-y-3">
+        {messages.length === 0 && (
+          <div className="text-center py-10">
+            <p className="text-[#A09890] text-sm">
+              Say hi to {matchInfo.user.name}! You matched — don't be shy.
+            </p>
+          </div>
+        )}
         {messages.map((msg) => {
           const isMe = msg.sender_id === user?.id;
           return (
@@ -121,15 +127,22 @@ export default function Chat() {
               className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm ${
+                className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                   isMe
-                    ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-tr-none'
-                    : 'bg-zinc-800 text-zinc-100 rounded-tl-none'
+                    ? 'bg-[#1A1714] text-white rounded-br-sm'
+                    : 'bg-white text-[#1A1714] border border-[#E8E5DF] rounded-bl-sm'
                 }`}
               >
                 {msg.content}
-                <div className={`text-[10px] mt-1 opacity-60 ${isMe ? 'text-right' : 'text-left'}`}>
-                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div
+                  className={`text-[10px] mt-1 ${
+                    isMe ? 'text-white/40 text-right' : 'text-[#A09890]'
+                  }`}
+                >
+                  {new Date(msg.timestamp).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </div>
               </div>
             </div>
@@ -139,20 +152,21 @@ export default function Chat() {
       </div>
 
       {/* Input */}
-      <div className="p-4 bg-[#1A1A1A] border-t border-zinc-800">
-        <form onSubmit={handleSendMessage} className="flex gap-3">
+      <div className="px-4 py-3 bg-white border-t border-[#E8E5DF]">
+        <form onSubmit={handleSendMessage} className="flex gap-2.5 items-center">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+            className="flex-1 bg-[#F8F6F2] border border-[#E8E5DF] rounded-xl px-4 py-3 text-[#1A1714] text-sm placeholder:text-[#A09890] focus:outline-none focus:border-[#D8D4CC] transition-colors"
           />
           <button
             type="submit"
-            className="w-12 h-12 bg-purple-500 rounded-2xl flex items-center justify-center text-white active:scale-90 transition-transform shadow-lg shadow-purple-500/20"
+            disabled={!newMessage.trim()}
+            className="w-11 h-11 bg-[#D94F1E] rounded-xl flex items-center justify-center text-white hover:bg-[#C2441A] active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <Send size={20} />
+            <Send size={18} />
           </button>
         </form>
       </div>

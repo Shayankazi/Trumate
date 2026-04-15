@@ -1,203 +1,166 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
-import { GraduationCap, BookOpen, Users, ArrowRight, Heart, MessageCircle, Sparkles } from 'lucide-react';
+import { GraduationCap, BookOpen, Shield, ArrowRight, Heart } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 
 export default function Home() {
   const user = useAuthStore((state) => state.user);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100
-      }
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white selection:bg-purple-500/30 overflow-x-hidden pb-32">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-pink-600/10 rounded-full blur-[120px] animate-pulse delay-700" />
-      </div>
-
-      <nav className="relative z-10 flex items-center justify-between px-8 py-8 max-w-7xl mx-auto">
-        <motion.div 
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          className="flex items-center gap-2"
-        >
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-            <Heart className="text-white w-6 h-6" fill="currentColor" />
+    <div className="min-h-screen bg-[#F8F6F2] text-[#1A1714] pb-24">
+      {/* Nav */}
+      <nav className="flex items-center justify-between px-6 md:px-10 py-5 max-w-6xl mx-auto">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-[#D94F1E] rounded-lg flex items-center justify-center">
+            <Heart className="w-4 h-4 text-white" fill="currentColor" />
           </div>
-          <h1 className="text-2xl font-black bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
-            TruMate
-          </h1>
-        </motion.div>
-        
-        <motion.div
-          initial={{ x: 20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
+          <span className="text-lg font-bold text-[#1A1714]">TruMate</span>
+        </div>
+        <Link
+          to={user ? '/discover' : '/login'}
+          className="px-5 py-2 text-sm font-semibold border border-[#D8D4CC] rounded-full text-[#1A1714] hover:bg-[#1A1714] hover:text-white hover:border-[#1A1714] transition-all duration-200"
         >
-          <Link
-            to={user ? "/discover" : "/login"}
-            className="group relative px-6 py-2.5 rounded-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 overflow-hidden"
-          >
-            <span className="relative z-10 font-medium text-sm">
-              {user ? "Go to Dashboard" : "Sign In"}
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </Link>
-        </motion.div>
+          {user ? 'Open App' : 'Sign In'}
+        </Link>
       </nav>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-32 flex flex-col items-center text-center">
+      {/* Hero */}
+      <main className="max-w-6xl mx-auto px-6 md:px-10 pt-16 pb-20">
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-col items-center"
-        >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/50 border border-zinc-800/50 backdrop-blur-sm mb-8">
-            <Sparkles className="w-4 h-4 text-purple-400" />
-            <span className="text-zinc-400 text-xs font-semibold uppercase tracking-widest">
-              The Next Gen Student Matcher
-            </span>
-          </motion.div>
-
-          <motion.h2 
-            variants={itemVariants}
-            className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9]"
-          >
-            Find your <br />
-            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
-              ideal roommate
-            </span>
-          </motion.h2>
-
-          <motion.p 
-            variants={itemVariants}
-            className="text-zinc-500 text-lg md:text-xl max-w-2xl mb-12 leading-relaxed"
-          >
-            Ditch the sketchy campus flyers. Use TruMate to find fellow students 
-            based on major, study habits, and lifestyle. Built specifically for campus life.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-            <Link
-              to={user ? "/discover" : "/login"}
-              className="group relative inline-flex items-center gap-2 bg-white text-black font-bold text-lg px-8 py-4 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-            >
-              {user ? 'Go to Discover' : 'Start Swiping'}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <button className="px-8 py-4 rounded-2xl border border-zinc-800 font-bold text-lg hover:bg-zinc-900 transition-all">
-              Learn More
-            </button>
-          </motion.div>
-        </motion.div>
-
-        {/* Floating UI Elements Preview */}
-        <motion.div 
-          initial={{ opacity: 0, y: 100 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 1 }}
-          className="mt-32 w-full grid md:grid-cols-3 gap-6 relative"
+          transition={{ duration: 0.45 }}
         >
-          {/* Card 1 */}
-          <motion.div 
-            whileHover={{ y: -10 }}
-            className="group p-8 rounded-[2rem] bg-zinc-900/30 border border-zinc-800/50 backdrop-blur-xl hover:bg-zinc-900/50 transition-all duration-500 text-left"
-          >
-            <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-              <GraduationCap size={28} />
-            </div>
-            <h3 className="text-2xl font-bold mb-4">Campus Circle</h3>
-            <p className="text-zinc-500 leading-relaxed">Connect exclusively with students from your college or nearby verified universities.</p>
-          </motion.div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FEF0EB] border border-[#F5C4B2] rounded-full mb-8">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#D94F1E]" />
+            <span className="text-xs font-semibold text-[#D94F1E]">Made for college students</span>
+          </div>
 
-          {/* Card 2 */}
-          <motion.div 
-            whileHover={{ y: -10 }}
-            className="group p-8 rounded-[2rem] bg-zinc-900/30 border border-zinc-800/50 backdrop-blur-xl hover:bg-zinc-900/50 transition-all duration-500 text-left"
-          >
-            <div className="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-400 mb-8 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
-              <BookOpen size={28} />
-            </div>
-            <h3 className="text-2xl font-bold mb-4">Study Habits</h3>
-            <p className="text-zinc-500 leading-relaxed">Match with early birds or night owls who respect your intense exam study schedules.</p>
-          </motion.div>
+          <h1 className="text-5xl md:text-7xl font-bold text-[#1A1714] leading-[1.05] tracking-tight mb-6 max-w-3xl">
+            Find a roommate<br />who actually fits.
+          </h1>
 
-          {/* Card 3 */}
-          <motion.div 
-            whileHover={{ y: -10 }}
-            className="group p-8 rounded-[2rem] bg-zinc-900/30 border border-zinc-800/50 backdrop-blur-xl hover:bg-zinc-900/50 transition-all duration-500 text-left"
-          >
-            <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-              <Users size={28} />
-            </div>
-            <h3 className="text-2xl font-bold mb-4">Real Matches</h3>
-            <p className="text-zinc-500 leading-relaxed">Safety first. Connect with real students through our mutual-like discovery system.</p>
-          </motion.div>
+          <p className="text-[#706B64] text-xl leading-relaxed mb-10 max-w-xl">
+            No more sketchy Facebook posts or housing assignment luck. TruMate matches you with students who share your habits, schedule, and lifestyle.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to={user ? '/discover' : '/login'}
+              className="inline-flex items-center gap-2 bg-[#D94F1E] text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-[#C2441A] transition-colors"
+            >
+              {user ? 'Continue Swiping' : 'Get Started Free'}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#D8D4CC] font-semibold text-[#1A1714] bg-white hover:bg-[#F0EDE8] transition-colors">
+              See how it works
+            </button>
+          </div>
         </motion.div>
 
-        {/* Demo Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-40 w-full"
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.45 }}
+          className="mt-20 flex flex-wrap gap-10 md:gap-16 border-t border-[#E8E5DF] pt-10"
         >
-          <div className="relative max-w-4xl mx-auto rounded-[3rem] overflow-hidden border border-zinc-800 shadow-2xl shadow-purple-500/10">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10" />
-            <img 
-              src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern+mobile+app+interface+on+iphone+showing+a+dating+app+style+card+for+roommate+matching+dark+mode+purple+accents&image_size=landscape_16_9" 
-              alt="App Demo" 
-              className="w-full h-[500px] object-cover"
-            />
-            <div className="absolute bottom-12 left-12 right-12 z-20 text-left flex items-end justify-between">
-              <div>
-                <h4 className="text-3xl font-bold mb-2">Modern Swipe UI</h4>
-                <p className="text-zinc-400">Experience roommate hunting like never before.</p>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-zinc-900/80 backdrop-blur border border-zinc-700 flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-zinc-400" />
-                </div>
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-black" fill="currentColor" />
-                </div>
-              </div>
+          {[
+            { value: '2,400+', label: 'Active students' },
+            { value: '89%', label: 'Match satisfaction' },
+            { value: '40+', label: 'Colleges covered' },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <div className="text-3xl font-bold text-[#1A1714]">{stat.value}</div>
+              <div className="text-sm text-[#706B64] mt-0.5">{stat.label}</div>
             </div>
-          </div>
+          ))}
         </motion.div>
       </main>
 
-      <footer className="relative z-10 max-w-7xl mx-auto px-8 py-20 text-center border-t border-zinc-900 mt-20">
-        <div className="flex flex-col items-center gap-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center opacity-50">
-            <Heart className="text-white w-6 h-6" fill="currentColor" />
+      {/* Features */}
+      <section className="bg-white border-y border-[#E8E5DF] py-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-10">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-[#1A1714] mb-2">Built for campus life</h2>
+            <p className="text-[#706B64]">Three things that actually matter when finding a roommate.</p>
           </div>
-          <p className="text-zinc-600 text-sm">© 2024 TruMate. Built for the modern student experience.</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                Icon: GraduationCap,
+                title: 'Campus-verified',
+                description: 'Everyone on TruMate is a real student. Connect with people from your college or nearby universities — no randoms.',
+                iconColor: '#D94F1E',
+                iconBg: '#FEF0EB',
+              },
+              {
+                Icon: BookOpen,
+                title: 'Lifestyle matching',
+                description: 'Early bird or night owl? Clean freak or laid-back? We match on the stuff that actually causes roommate conflicts.',
+                iconColor: '#6B4FE8',
+                iconBg: '#F0EDFF',
+              },
+              {
+                Icon: Shield,
+                title: 'Mutual interest only',
+                description: 'No unsolicited messages. You only connect when both of you match — giving you full control over who reaches out.',
+                iconColor: '#16A34A',
+                iconBg: '#ECFDF5',
+              },
+            ].map(({ Icon, title, description, iconColor, iconBg }) => (
+              <motion.div
+                key={title}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.2 }}
+                className="p-6 rounded-2xl border border-[#E8E5DF] bg-[#FAFAF8]"
+              >
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
+                  style={{ backgroundColor: iconBg }}
+                >
+                  <Icon size={22} style={{ color: iconColor }} />
+                </div>
+                <h3 className="text-base font-semibold text-[#1A1714] mb-2">{title}</h3>
+                <p className="text-[#706B64] text-sm leading-relaxed">{description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section className="py-20 max-w-6xl mx-auto px-6 md:px-10">
+        <div className="bg-[#1A1714] rounded-3xl p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              Your future roommate<br />is already here.
+            </h2>
+            <p className="text-[#A09890]">Set up your profile in under 5 minutes. It's free.</p>
+          </div>
+          <Link
+            to={user ? '/discover' : '/login'}
+            className="shrink-0 inline-flex items-center gap-2 bg-[#D94F1E] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#C2441A] transition-colors text-base"
+          >
+            {user ? 'Back to App' : 'Join TruMate'}
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-[#E8E5DF] py-8 px-6 md:px-10 max-w-6xl mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 bg-[#D94F1E] rounded-lg flex items-center justify-center">
+            <Heart className="w-3.5 h-3.5 text-white" fill="currentColor" />
+          </div>
+          <span className="font-semibold text-[#1A1714] text-sm">TruMate</span>
+        </div>
+        <p className="text-sm text-[#A09890]">© 2024 TruMate. Built for students.</p>
       </footer>
 
-      {user ? <BottomNav /> : null}
+      {user && <BottomNav />}
     </div>
   );
 }
