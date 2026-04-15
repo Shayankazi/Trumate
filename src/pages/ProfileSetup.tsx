@@ -117,9 +117,10 @@ export default function Profile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const firstName = formData.name.split(' ')[0] || 'User';
       const finalImages = formData.images[0]
         ? formData.images
-        : [`https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=${encodeURIComponent('modern professional student headshot, soft lighting, campus background')}&image_size=square_hd`];
+        : [`https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name || firstName)}&size=256&background=D94F1E&color=ffffff&bold=true&format=svg`];
 
       const response = await fetch(apiUrl('/api/users/profile'), {
         method: 'PUT',
@@ -189,10 +190,10 @@ export default function Profile() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl border border-[#E8E5DF] overflow-hidden"
+            className="bg-white rounded-2xl border border-[#E8E5DF]"
           >
             {/* Cover */}
-            <div className="h-32 bg-gradient-to-br from-[#FEF0EB] to-[#F0EDFF] relative">
+            <div className="h-32 bg-gradient-to-br from-[#FEF0EB] to-[#F0EDFF] relative rounded-t-2xl overflow-hidden">
               <button
                 onClick={() => navigate('/discover')}
                 className="absolute top-4 left-4 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-xl border border-white flex items-center justify-center text-[#706B64] hover:text-[#1A1714] transition-colors"
@@ -483,6 +484,31 @@ export default function Profile() {
                       className="w-full bg-[#F8F6F2] border border-[#E8E5DF] rounded-xl px-4 py-3 text-[#1A1714] text-sm focus:outline-none focus:ring-2 focus:ring-[#D94F1E]/30 focus:border-[#D94F1E] h-28 resize-none transition-all"
                       placeholder="What makes you a great roommate?"
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-[#1A1714] mb-1.5">
+                      Profile photo URL
+                      <span className="text-[#A09890] font-normal ml-1">(optional)</span>
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.images[0]}
+                      onChange={(e) => setFormData({ ...formData, images: [e.target.value] })}
+                      className="w-full bg-[#F8F6F2] border border-[#E8E5DF] rounded-xl px-4 py-3 text-[#1A1714] text-sm focus:outline-none focus:ring-2 focus:ring-[#D94F1E]/30 focus:border-[#D94F1E] transition-all"
+                      placeholder="https://example.com/your-photo.jpg"
+                    />
+                    {formData.images[0] && (
+                      <div className="mt-2 flex items-center gap-2">
+                        <img
+                          src={formData.images[0]}
+                          alt="Preview"
+                          className="w-10 h-10 rounded-lg object-cover border border-[#E8E5DF]"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
+                        <span className="text-xs text-[#A09890]">Preview</span>
+                      </div>
+                    )}
                   </div>
 
                   <button

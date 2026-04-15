@@ -32,9 +32,14 @@ export default function Login() {
       const data = await response.json();
       if (response.ok) {
         setAuth(data.user, data.token);
-        if (isLogin && data.user.hasProfile) {
-          navigate('/discover');
+        if (!isLogin) {
+          // New registration → complete profile first
+          navigate('/profile-setup');
+        } else if (data.user.hasProfile) {
+          // Returning user with profile → home page (nav shows "Open App")
+          navigate('/');
         } else {
+          // Returning user without profile → complete profile
           navigate('/profile-setup');
         }
       } else {
