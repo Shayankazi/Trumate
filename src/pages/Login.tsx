@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
-import { Heart, ArrowRight, ChevronLeft } from 'lucide-react';
+import { ArrowRight, ChevronLeft } from 'lucide-react';
+import Logo from '../components/Logo';
 import { apiUrl } from '../lib/api';
 
 export default function Login() {
@@ -51,11 +52,8 @@ export default function Login() {
     <div className="min-h-screen bg-[#F8F6F2] flex flex-col md:flex-row">
       {/* Left panel */}
       <div className="hidden md:flex md:w-[42%] bg-[#1A1714] flex-col justify-between p-12">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-[#D94F1E] rounded-lg flex items-center justify-center">
-            <Heart className="w-4 h-4 text-white" fill="currentColor" />
-          </div>
-          <span className="text-lg font-bold text-white">TruMate</span>
+        <Link to="/">
+          <Logo size={28} variant="light" />
         </Link>
 
         <div>
@@ -78,11 +76,8 @@ export default function Login() {
       <div className="flex-1 flex flex-col">
         {/* Mobile nav */}
         <div className="md:hidden flex items-center justify-between px-6 py-5 border-b border-[#E8E5DF]">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#D94F1E] rounded-lg flex items-center justify-center">
-              <Heart className="w-3.5 h-3.5 text-white" fill="currentColor" />
-            </div>
-            <span className="font-bold text-[#1A1714]">TruMate</span>
+          <Link to="/">
+            <Logo size={26} />
           </Link>
           <Link to="/" className="text-sm text-[#706B64] font-medium">Back</Link>
         </div>

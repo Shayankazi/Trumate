@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
-import { GraduationCap, BookOpen, Shield, ArrowRight, Heart } from 'lucide-react';
+import { GraduationCap, BookOpen, Shield, ArrowRight } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
+import Logo from '../components/Logo';
 
 export default function Home() {
   const user = useAuthStore((state) => state.user);
@@ -11,12 +12,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#F8F6F2] text-[#1A1714] pb-24">
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 md:px-10 py-5 max-w-6xl mx-auto">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-[#D94F1E] rounded-lg flex items-center justify-center">
-            <Heart className="w-4 h-4 text-white" fill="currentColor" />
-          </div>
-          <span className="text-lg font-bold text-[#1A1714]">TruMate</span>
-        </div>
+        <Logo size={28} />
         <Link
           to={user ? '/discover' : '/login'}
           className="px-5 py-2 text-sm font-semibold border border-[#D8D4CC] rounded-full text-[#1A1714] hover:bg-[#1A1714] hover:text-white hover:border-[#1A1714] transition-all duration-200"
@@ -151,12 +147,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-[#E8E5DF] py-8 px-6 md:px-10 max-w-6xl mx-auto flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-[#D94F1E] rounded-lg flex items-center justify-center">
-            <Heart className="w-3.5 h-3.5 text-white" fill="currentColor" />
-          </div>
-          <span className="font-semibold text-[#1A1714] text-sm">TruMate</span>
-        </div>
+        <Logo size={24} />
         <p className="text-sm text-[#A09890]">© 2024 TruMate. Built for students.</p>
       </footer>
 
