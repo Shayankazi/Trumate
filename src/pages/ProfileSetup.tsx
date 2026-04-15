@@ -193,7 +193,7 @@ export default function Profile() {
             className="bg-white rounded-2xl border border-[#E8E5DF]"
           >
             {/* Cover */}
-            <div className="h-32 bg-gradient-to-br from-[#FEF0EB] to-[#F0EDFF] relative rounded-t-2xl overflow-hidden">
+            <div className="h-44 bg-gradient-to-br from-[#FEF0EB] to-[#F0EDFF] relative rounded-t-2xl">
               <button
                 onClick={() => navigate('/discover')}
                 className="absolute top-4 left-4 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-xl border border-white flex items-center justify-center text-[#706B64] hover:text-[#1A1714] transition-colors"
@@ -210,15 +210,15 @@ export default function Profile() {
 
             {/* Avatar row */}
             <div className="px-5 pb-5">
-              <div className="flex items-end gap-4 -mt-10 mb-4">
-                <div className="w-20 h-20 rounded-2xl border-4 border-white overflow-hidden shadow-md flex-shrink-0">
+              <div className="flex items-end gap-4 -mt-12 mb-4 relative z-10">
+                <div className="w-24 h-24 rounded-2xl border-4 border-white overflow-hidden shadow-md flex-shrink-0">
                   <img
-                    src={formData.images[0] || 'https://via.placeholder.com/150'}
+                    src={formData.images[0] || `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&size=256&background=D94F1E&color=ffffff&bold=true`}
                     alt={formData.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
-                <div className="pb-1">
+                <div className="pb-2">
                   <h1 className="text-xl font-bold text-[#1A1714]">
                     {formData.name}, {formData.age}
                   </h1>

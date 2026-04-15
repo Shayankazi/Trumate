@@ -188,7 +188,11 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
         major: rnd(majors), college: rnd(colleges), year: rnd(years),
         rent: o.rent, bio: bio(),
         location: { city: loc.city, coordinates: loc.coordinates },
-        images: [`https://i.pravatar.cc/500?img=${o.img}`],
+        images: [
+          o.gender === "Man"
+            ? `https://randomuser.me/api/portraits/men/${o.img}.jpg`
+            : `https://randomuser.me/api/portraits/women/${o.img}.jpg`
+        ],
         interests: rndN(interestPool, 5),
         preferences: {
           smoking: Math.random()<0.1, drinking: Math.random()<0.2,
@@ -208,7 +212,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
       year: 'Third Year',
       bio: 'CS student who games on weekends and cooks on Sundays. Easy to live with, respectful of shared spaces.',
       location: { city: 'Katraj, Pune', coordinates: [73.8553, 18.4529] },
-      images: ['https://i.pravatar.cc/500?img=25'],
+      images: ['https://randomuser.me/api/portraits/men/25.jpg'],
       interests: ['Coding','Gaming','Cricket','Movies','Music'],
       preferences: { smoking:false, drinking:false, sleep_schedule:'night_owl',
         cleanliness:'medium', gaming:true, guests:true, pets:'no', diet:'non_veg' },
@@ -221,7 +225,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
       year: 'Third Year', rent: 9000,
       bio: 'IT student with a room in a quiet 2BHK near MITWPU. Serious about studies, fun on weekends.',
       location: { city: 'Kondhwa, Pune', coordinates: [73.8755, 18.4707] },
-      images: ['https://i.pravatar.cc/500?img=66'],
+      images: ['https://randomuser.me/api/portraits/women/66.jpg'],
       interests: ['Coding','Music','Movies','Fitness','Cooking'],
       preferences: { smoking:false, drinking:false, sleep_schedule:'night_owl',
         cleanliness:'medium', gaming:true, guests:true, pets:'no', diet:'non_veg' },

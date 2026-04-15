@@ -68,14 +68,15 @@ const DiscoveryCard = forwardRef<HTMLDivElement, CardProps>(({ user, onSwipe }, 
       className="absolute inset-3 cursor-grab active:cursor-grabbing"
     >
       <div className="relative h-full w-full rounded-2xl overflow-hidden shadow-2xl bg-[#1A1714]">
+        {/* Image — constrained to top 65% to avoid extreme stretch of small portraits */}
         <img
           src={user.images[0]}
           alt={user.name}
-          className="h-full w-full object-cover select-none pointer-events-none"
+          className="absolute top-0 left-0 w-full h-[65%] object-cover object-top select-none pointer-events-none"
         />
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+        {/* Gradient overlay — covers full card from bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/10 pointer-events-none" />
 
         {/* Like / Pass indicators */}
         <motion.div
